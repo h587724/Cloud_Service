@@ -41,14 +41,18 @@ public class AccessLog {
 	
 	// TODO: return JSON representation of the access log
 	public String toJson () {
-		String json = null;
+		String json = "";
 		Gson gson = new Gson();
-		for (int i = 0; i < log.size(); i++){
-			if (log.get(i) != null) {
-				json += gson.toJson(log.get(i).toString());
+		if (log.size() == 0){
+			return gson.toJson(json);
+		} else {
+			for (int i = 0; i < log.size(); i++) {
+				if (log.get(i) != null) {
+					json += gson.toJson(log.get(i).toString());
+				}
 			}
+			return json;
 		}
-    	return json;
     }
 
 	public int size() {

@@ -54,26 +54,30 @@ public class App {
 		// as per the HTTP/REST operations describined in the project description
 
 		post("/accessdevice/log", (req, res) -> {
-
 			Gson gson = new Gson();
 			String messJson = req.body();
-			//String messString = gson.fromJson(messJson, String.class);
-			int id = accesslog.add(gson.toJson(messJson));
-			return new AccessEntry(id, gson.toJson(messJson));
+			String messString = gson.fromJson(messJson, String.class);
+			int id = accesslog.add(messString);
+			return new AccessEntry(id, messString);
 		});
 
 		get("/accessdevice/log", (req, res) -> {
-			AccessEntry[] entries = new AccessEntry[accesslog.size()];
+			/*AccessEntry[] entries = new AccessEntry[accesslog.size()];
 			for (int i = 0; i < accesslog.size(); i ++){
 				entries[i] = accesslog.get(i);
 			}
-			return Arrays.toString(entries);
+			return Arrays.toString(entries);*/
+			return accesslog.toJson();
 		});
 
 		get("/accessdevice/log/:id" , (req, res) -> {
 			Gson gson = new Gson();
 			AccessEntry message = (accesslog.get(Integer.parseInt(req.params(":id"))));
-			return message;
+			if (message == null){
+				return "The entry with the id = " + req.params(":id") + " doesn't exist!";
+			} else {
+				return message;
+			}
 		});
 
 		put("/accessdevice/code/:code", (req, res) -> {
